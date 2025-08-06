@@ -1,16 +1,11 @@
 import Image from "next/image";
+import AppButton from "./components/AppButton";
 
 export default function Home() {
   return (
-    <div>
-      <div>
-        <h1>HIGHER OR LOWER</h1>
-      </div>
-      <div>
-        <button className="bg-blue-800 text-white py-2 px-4 rounded-full">
-          PLAY
-        </button>
-      </div>
-    </div>
+    <main className="flex flex-col items-center min-h-screen pt-10">
+      <h1 className="text-9xl font-bold mb-50 select-none ">HIGHER OR LOWER</h1>
+      <AppButton>Play</AppButton>
+    </main>
   );
 }
