@@ -8,11 +8,17 @@ export async function GET() {
         indexSecond = Math.floor(Math.random()*shows.length)
     } while (indexSecond === indexFirst)
 
+
+    
     const pairShows = [shows[indexFirst], shows[indexSecond]];
 
+    const filteredPair = pairShows.map(({id, name, imageUrl}) => ({
+        id, name, imageUrl
+    }));
+
     return Response.json({
-        first: pairShows[0],
-        second: pairShows[1]
+        first: filteredPair[0],
+        second: filteredPair[1]
     });
 }
 
