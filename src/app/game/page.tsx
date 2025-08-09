@@ -17,13 +17,20 @@ export default function Game() {
     fetchPair();
   }, []);
 
+  const handleClick = (item: Item) => {
+    console.log(item);
+  };
+
   return (
     <div>
-      <h1> Hello</h1>
       {pair && (
-        <>
-          <ItemCard item={pair.first}></ItemCard>
-        </>
+        <div className="flex flex-row items-center justify-center min-h-screen gap-20">
+          <ItemCard item={pair.first} onClick={() => handleClick(pair.first)} />
+          <ItemCard
+            item={pair.second}
+            onClick={() => handleClick(pair.second)}
+          />
+        </div>
       )}
     </div>
   );
