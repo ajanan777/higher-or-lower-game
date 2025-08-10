@@ -27,16 +27,34 @@ export async function POST(req: Request) {
     if (!(left && right)) {
         return new Response("chosenID does not match options", {status: 400});
     }
-
-
+    var outcome = null
+    let chosenRating;
     const leftRating = left.rating
     const rightRating = right.rating
     if (chosenID === leftID) {
-        const chosenRating = leftRating
+        chosenRating = leftRating
     }
-    else {const chosenRating = rightRating}
-    const winRating = Math.max(leftRating, rightRating)
+    else {chosenRating = rightRating}
+    if (Math.max(leftRating, rightRating) === chosenRating) {
+        outcome = true
+    }
+    else {
+        outcome = false
+    }
 
-    //return left and right rating, return win rating (maybe return the left/right object cuz i need to show it won)
+    return Response.json(
+        {
+            leftRating: leftRating,
+            rightRating: rightRating,
+            outcome: outcome,
+            chosenRating: chosenRating
+
+
+        },
+        {status: 200}
+    )
     
 }
+
+
+    // const winRating = Math.max(leftRating, rightRating)
