@@ -17,8 +17,20 @@ export default function Game() {
     fetchPair();
   }, []);
 
-  const handleClick = (item: Item) => {
-    console.log(item);
+  const handleClick = async (item: Item) => {
+    const response = await fetch("/api/guess", {
+      method: "POST", //HTTP method
+      headers: {
+        "Content-Type": "application/json", //telling backend i am sending JSON
+      },
+      body: JSON.stringify({
+        leftID: pair.first.id,
+        rightID: pair.second.id,
+        chosenID: item.id,
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
   };
 
   return (
