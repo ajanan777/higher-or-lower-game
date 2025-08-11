@@ -11,7 +11,6 @@ export default function Game() {
 
   const [pair, setPair] = useState<Pair | null>(null);
   const [isGuessing, setIsGuessing] = useState(false);
-
   const [reveal, setReveal] = useState<RevealState | null>(null);
 
   const fetchPair = async () => {
@@ -26,7 +25,7 @@ export default function Game() {
   }, []);
 
   const handleClick = async (chosenItem: Item, otherItem: Item) => {
-    if (!pair || isGuessing) {
+    if (!pair || isGuessing || reveal) {
       console.log(isGuessing);
       return;
     }
@@ -45,18 +44,14 @@ export default function Game() {
         }),
       });
       const data = await response.json();
-      outcomeReveal(data, chosenItem, otherItem);
+      outcomeReveal(data, chosenItem);
     } finally {
       console.log("guess complete");
       setIsGuessing(false);
     }
   };
 
-  const outcomeReveal = async (
-    data: GuessResponse,
-    chosenItem: Item,
-    otherItem: Item
-  ) => {
+  const outcomeReveal = async (data: GuessResponse, chosenItem: Item) => {
     const { chosenRating, leftRating, outcome, rightRating } = data;
     console.log("outcome", chosenRating);
 
@@ -67,17 +62,10 @@ export default function Game() {
       rightRating,
     });
 
-    if (outcome === true) {
-      //color cards green,(later: fetch score update)
-      console.log("(outcomeReveal)guess right");
-    }
-    if (outcome === false) {
-      console.log("(outcomeReveal)guess wrong");
-      //color cards red
-    }
     //update score number
     //get new pair cards
     await sleep(1200);
+    console.log("animation complete");
     fetchPair();
   };
 
@@ -85,7 +73,7 @@ export default function Game() {
     <div>
       {pair && (
         <div className="flex flex-row items-center justify-center min-h-screen gap-20">
-          <div className={!isGuessing ? "cursor-pointer" : ""}>
+          <div className={!isGuessing && !reveal ? "cursor-pointer" : ""}>
             <ItemCard
               item={pair.first}
               onClick={() => handleClick(pair.first, pair.second)}
@@ -97,9 +85,10 @@ export default function Game() {
                     : "wrong"
                   : undefined
               }
+              rating={reveal?.leftRating}
             />
           </div>
-          <div className={!isGuessing ? "cursor-pointer" : ""}>
+          <div className={!isGuessing && !reveal ? "cursor-pointer" : ""}>
             <ItemCard
               item={pair.second}
               onClick={() => handleClick(pair.second, pair.first)}
@@ -111,6 +100,7 @@ export default function Game() {
                     : "wrong"
                   : undefined
               }
+              rating={reveal?.rightRating}
             />
           </div>
         </div>
