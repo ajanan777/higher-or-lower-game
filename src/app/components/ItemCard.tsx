@@ -17,6 +17,7 @@ export default function ItemCard({
   rating,
 }: ItemCardProps) {
   const { name, imageUrl } = item;
+  const nameLength = name.length;
 
   return (
     <div
@@ -44,14 +45,20 @@ export default function ItemCard({
                 : "text-green-500 [text-shadow:0_0_6px_#22c55e,0_0_2px_#22c55e]"
             }`}
           >
-            {rating.toFixed(1)}
+            {rating}
           </span>
         </div>
       )}
 
       <div className="flex-grow w-full bg-[#23064e]" />
       <div className="h-[60px] w-full bg-[#170435] flex items-center justify-center">
-        <span className="text-[#00dffc] text-xl font-semibold">{name}</span>
+        <span
+          className={`text-[#00dffc] font-semibold text-center ${
+            nameLength > 50 ? "" : "text-xl"
+          } `}
+        >
+          {name}
+        </span>
       </div>
     </div>
   );

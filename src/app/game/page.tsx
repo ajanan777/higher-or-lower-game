@@ -93,7 +93,7 @@ export default function Game() {
   return (
     <div>
       <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center select-none">
-        <h1 className="text-8xl text-[#7df9ff] font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] animate-pulse [animation-duration:5s]">
+        <h1 className="text-8xl text-[#7df9ff] font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] animate-pulse [animation-duration:5s] [-webkit-text-stroke:2px_#00935c]">
           {score}
         </h1>
         <h1
