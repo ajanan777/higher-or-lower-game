@@ -12,6 +12,8 @@ export default function Game() {
   const [pair, setPair] = useState<Pair | null>(null);
   const [isGuessing, setIsGuessing] = useState(false);
   const [reveal, setReveal] = useState<RevealState | null>(null);
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
 
   const fetchPair = async () => {
     const response = await fetch("/api/pair");
@@ -41,6 +43,8 @@ export default function Game() {
           leftID: pair.first.id,
           rightID: pair.second.id,
           chosenID: chosenItem.id,
+          score: score,
+          highScore: highScore,
         }),
       });
       const data = await response.json();
@@ -52,7 +56,14 @@ export default function Game() {
   };
 
   const outcomeReveal = async (data: GuessResponse, chosenItem: Item) => {
-    const { chosenRating, leftRating, outcome, rightRating } = data;
+    const {
+      chosenRating,
+      leftRating,
+      outcome,
+      rightRating,
+      newHighScore,
+      newScore,
+    } = data;
     console.log("outcome", chosenRating);
 
     setReveal({
@@ -62,17 +73,36 @@ export default function Game() {
       rightRating,
     });
 
+    console.log(newScore);
+
+    setHighScore(newHighScore);
+    setScore(newScore);
+
     //update score number
     //get new pair cards
     await sleep(1200);
+    if (outcome === false) {
+      await sleep(500);
+    }
+    if (outcome === true) {
+    }
     console.log("animation complete");
     fetchPair();
   };
 
   return (
     <div>
+      <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center select-none">
+        <h1 className="text-8xl text-[#7df9ff] font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] animate-pulse">
+          {score}
+        </h1>
+        <h1 className="text-2xl text-[#ff71ce] font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] ">
+          HIGH SCORE: {highScore}
+        </h1>
+      </div>
+
       {pair && (
-        <div className="flex flex-row items-center justify-center min-h-screen gap-20">
+        <div className="flex pt-20 flex-row items-center justify-center min-h-screen gap-20 select-none">
           <div className={!isGuessing && !reveal ? "cursor-pointer" : ""}>
             <ItemCard
               item={pair.first}
