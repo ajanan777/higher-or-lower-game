@@ -93,10 +93,16 @@ export default function Game() {
   return (
     <div>
       <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center select-none">
-        <h1 className="text-8xl text-[#7df9ff] font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] animate-pulse">
+        <h1 className="text-8xl text-[#7df9ff] font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] animate-pulse [animation-duration:5s]">
           {score}
         </h1>
-        <h1 className="text-2xl text-[#ff71ce] font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] ">
+        <h1
+          className={`" font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]" ${
+            highScore === 0 || highScore > score
+              ? "text-[#ff71ce] "
+              : "text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-cyan-400  [text-shadow:0_0_5px_#e879f9,0_0_14px_#22d3ee] [-webkit-text-stroke:1px_#22d3ee] animate-pulse [animation-duration:2s]"
+          } `}
+        >
           HIGH SCORE: {highScore}
         </h1>
       </div>
