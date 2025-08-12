@@ -13,7 +13,9 @@ export type GuessResponse = {
     leftRating: number;
     rightRating: number;
     chosenRating: number;
-    outcome: boolean
+    outcome: boolean;
+    newHighScore: number;
+    newScore: number;  
 }
 
 export type RevealState = {
