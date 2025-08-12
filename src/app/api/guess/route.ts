@@ -1,10 +1,9 @@
 import { shows } from "../../data/shows"
 
 
-// Expects { leftId, rightId, chosenId }
 export async function POST(req: Request) {
     const body = await req.json()
-    const {leftID, rightID, chosenID} = body
+    const {leftID, rightID, chosenID, score, highScore} = body
 
     if (
         typeof leftID != "string" ||
@@ -35,19 +34,31 @@ export async function POST(req: Request) {
         chosenRating = leftRating
     }
     else {chosenRating = rightRating}
+    //Score calculations + outcome determination
+    let newScore = score
+    let newHighScore = highScore
     if (Math.max(leftRating, rightRating) === chosenRating) {
-        outcome = true
+        outcome = true //win
+        newScore = score + 1
+        newHighScore = Math.max(newHighScore, newScore)
     }
     else {
-        outcome = false
+        outcome = false //lose
+        newHighScore = Math.max(newHighScore, newScore)
+        newScore = 0
     }
+
+    
+
 
     return Response.json(
         {
             leftRating: leftRating,
             rightRating: rightRating,
             outcome: outcome,
-            chosenRating: chosenRating
+            chosenRating: chosenRating,
+            newScore: newScore,
+            newHighScore: newHighScore
 
 
         },
