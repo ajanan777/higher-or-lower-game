@@ -3,8 +3,19 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ItemCard from "../components/ItemCard";
 import { Item, Pair, GuessResponse, RevealState } from "../data/types";
+import { useSearchParams } from "next/navigation";
+
+type Mode = "easy" | "medium" | "hard";
 
 export default function Game() {
+  const search = useSearchParams();
+  const rawMode = search.get("mode") ?? "easy";
+  const mode: Mode = (["easy", "medium", "hard"] as const).includes(
+    rawMode as Mode
+  )
+    ? (rawMode as Mode)
+    : "easy";
+
   // delay helper function
   const sleep = (ms: number) =>
     new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -16,7 +27,7 @@ export default function Game() {
   const [highScore, setHighScore] = useState(0);
 
   const fetchPair = async () => {
-    const response = await fetch("/api/pair");
+    const response = await fetch(`/api/pair?mode=${encodeURIComponent(mode)}`);
     const data = await response.json();
     setPair(data);
     setReveal(null);
@@ -32,7 +43,7 @@ export default function Game() {
       return;
     }
     setIsGuessing(true);
-    // await sleep(300);
+    await sleep(100);
     try {
       const response = await fetch("/api/guess", {
         method: "POST", //HTTP method
@@ -87,6 +98,7 @@ export default function Game() {
     if (outcome === true) {
     }
     console.log("animation complete");
+    await sleep(150);
     fetchPair();
   };
 

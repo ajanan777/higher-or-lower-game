@@ -1,13 +1,14 @@
 "use client";
 import Image from "next/image";
-import AppButton from "./components/AppButton";
+import AppButton from "../components/AppButton";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Home() {
   const router = useRouter();
 
-  const handlePlayClicked = () => {
-    router.push("/mode_selector"); // unchanged
+  const handlePlayClicked = (mode: string) => {
+    router.push(`/game?mode=${encodeURIComponent(mode)}`);
   };
 
   return (
@@ -204,11 +205,23 @@ export default function Home() {
             bg-gradient-to-r from-[#7df9ff] via-[#00dffc] to-[#ff71ce]
             drop-shadow-[0_0_18px_rgba(0,223,252,0.45)]"
           >
-            HIGHER OR LOWER
+            SELECT DIFFICULTY
           </h1>
 
           <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
-            <AppButton onClick={handlePlayClicked}>Play</AppButton>
+            <AppButton onClick={() => handlePlayClicked(`hard`)}>
+              HARD [TOP 500 ANIME]
+            </AppButton>
+          </div>
+          <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
+            <AppButton onClick={() => handlePlayClicked(`medium`)}>
+              MEDIUM [TOP 200 ANIME]
+            </AppButton>
+          </div>
+          <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
+            <AppButton onClick={() => handlePlayClicked(`easy`)}>
+              EASY [TOP 100 ANIME]
+            </AppButton>
           </div>
         </div>
       </section>

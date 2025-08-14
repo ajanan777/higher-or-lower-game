@@ -1,7 +1,24 @@
 import { NextResponse } from "next/server";
+type Mode = "easy" | "medium" | "hard";
 
-export async function GET() {
-  const range = 50;
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const raw = searchParams.get("mode") ?? "easy";
+
+  type Mode = "easy" | "medium" | "hard";
+  const mode: Mode = (["easy", "medium", "hard"] as const).includes(raw as Mode)
+    ? (raw as Mode)
+    : "easy";
+
+  let range;
+  if (mode === "easy") {
+    range = 100;
+  } else if (mode === "medium") {
+    range = 200;
+  } else {
+    range = 500;
+  }
+
   const indexFirst = Math.floor(Math.random() * range) + 1;
   let indexSecond;
   do {
@@ -17,29 +34,30 @@ export async function GET() {
     );
   }
 
-  const first = await fetch(
-    `https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=${indexFirst}`,
+  let higherIndex;
+  if (indexFirst > indexSecond) {
+    higherIndex = indexFirst;
+  } else {
+    higherIndex = indexSecond;
+  }
+
+  console.log(higherIndex);
+  const dataSet = await fetch(
+    `https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=${higherIndex}`,
     {
       headers: { "X-MAL-CLIENT-ID": clientId },
       cache: "no-store", // avoid caching while you iterate
     }
   );
+  const theResponse = await dataSet.json();
 
-  const second = await fetch(
-    `https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=${indexSecond}`,
-    {
-      headers: { "X-MAL-CLIENT-ID": clientId },
-      cache: "no-store", // avoid caching while you iterate
-    }
-  );
+  const selectedAnimeFirst = theResponse.data[indexFirst - 1];
+  console.log(selectedAnimeFirst);
 
-  const dataFirst = await first.json();
-  const dataSecond = await second.json();
-  const selectedAnimeFirst = dataFirst.data[dataFirst.data.length - 1];
-  const selectedAnimeSecond = dataSecond.data[dataSecond.data.length - 1];
+  const selectedAnimeSecond = theResponse.data[indexSecond - 1];
+  console.log(selectedAnimeSecond);
 
   const pairShows = [selectedAnimeFirst, selectedAnimeSecond];
-  //   return NextResponse.json(selectedAnime, { status: r.status });
 
   const cleanedPair = pairShows.map(
     ({
@@ -55,11 +73,11 @@ export async function GET() {
     })
   );
 
-  //   const filteredPair = pairShows.map(({ id, name, imageUrl }) => ({
-  //     id,
-  //     name,
-  //     imageUrl,
-  //   }));
+  const filteredPair = pairShows.map(({ id, name, imageUrl }) => ({
+    id,
+    name,
+    imageUrl,
+  }));
 
   return NextResponse.json({
     first: cleanedPair[0],
