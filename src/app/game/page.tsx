@@ -32,7 +32,7 @@ export default function Game() {
       return;
     }
     setIsGuessing(true);
-    await sleep(300);
+    // await sleep(300);
     try {
       const response = await fetch("/api/guess", {
         method: "POST", //HTTP method
@@ -80,9 +80,9 @@ export default function Game() {
 
     //update score number
     //get new pair cards
-    await sleep(1200);
+    // await sleep(200);
     if (outcome === false) {
-      await sleep(500);
+      await sleep(300);
     }
     if (outcome === true) {
     }

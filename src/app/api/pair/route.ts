@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const indexFirst = Math.floor(Math.random() * 500) + 1;
+  const range = 50;
+  const indexFirst = Math.floor(Math.random() * range) + 1;
   let indexSecond;
   do {
-    indexSecond = Math.floor(Math.random() * 500) + 1;
+    indexSecond = Math.floor(Math.random() * range) + 1;
   } while (indexSecond === indexFirst);
 
   const clientId = process.env.MAL_CLIENT_ID;
