@@ -58,13 +58,15 @@ export default function ItemCard({
       {typeof rating === "number" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
           <span
-            className={`text-6xl font-extrabold drop-shadow-[0_0_8px_rgba(0,0,0,0.7)] ${
-              highlight === "correct"
-                ? "text-green-500"
-                : highlight === "wrong"
-                ? "text-red-500"
-                : "text-green-500"
-            }`}
+            className={`text-7xl font-extrabold
+        ${
+          highlight === "correct"
+            ? "text-green-500 [-webkit-text-stroke:2px_rgb(20,83,45)] [text-shadow:0_0_32px_rgba(34,197,94,0.8),0_2px_8px_rgba(0,0,0,0.7)]"
+            : highlight === "wrong"
+            ? "text-red-500 [-webkit-text-stroke:2px_rgb(127,29,29)] [text-shadow:0_0_32px_rgba(239,68,68,0.8),0_2px_8px_rgba(0,0,0,0.7)]"
+            : "text-green-500 [-webkit-text-stroke:2px_rgb(20,83,45)] [text-shadow:0_0_32px_rgba(34,197,94,0.8),0_2px_8px_rgba(0,0,0,0.7)]"
+        }
+      `}
           >
             {rating}
           </span>
