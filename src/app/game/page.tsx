@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import ItemCard from "../components/ItemCard";
 import { Item, Pair, GuessResponse, RevealState } from "../data/types";
 import { useSearchParams } from "next/navigation";
+import ScanLines from "../components/ScanLines";
 
 type Mode = "easy" | "medium" | "hard";
 
@@ -27,9 +28,11 @@ export default function Game() {
   const [highScore, setHighScore] = useState(0);
 
   const fetchPair = async () => {
+    console.log("fetching pair...");
     const response = await fetch(`/api/pair?mode=${encodeURIComponent(mode)}`);
     const data = await response.json();
     setPair(data);
+    console.log("pair fetched");
     setReveal(null);
   };
 
@@ -38,12 +41,12 @@ export default function Game() {
   }, []);
 
   const handleClick = async (chosenItem: Item, otherItem: Item) => {
+    console.log("handling click...");
     if (!pair || isGuessing || reveal) {
       console.log(isGuessing);
       return;
     }
     setIsGuessing(true);
-    await sleep(100);
     try {
       const response = await fetch("/api/guess", {
         method: "POST", //HTTP method
@@ -103,7 +106,10 @@ export default function Game() {
   };
 
   return (
-    <div>
+    <div className="relative min-h-screen overflow-hidden bg-[#050014]">
+      <ScanLines lines={true}></ScanLines>
+
+      {/* stuff */}
       <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center select-none">
         <h1 className="text-8xl text-[#7df9ff] font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] animate-pulse [animation-duration:5s] [-webkit-text-stroke:2px_#00935c]">
           {score}
@@ -120,7 +126,7 @@ export default function Game() {
       </div>
 
       {pair && (
-        <div className="flex pt-20 flex-row items-center justify-center min-h-screen gap-20 select-none">
+        <div className="relative z-10 flex pt-20 flex-row items-center justify-center min-h-screen gap-20 select-none">
           <div className={!isGuessing && !reveal ? "cursor-pointer" : ""}>
             <ItemCard
               item={pair.first}

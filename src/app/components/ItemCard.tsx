@@ -24,10 +24,12 @@ export default function ItemCard({
     <div
       onClick={disabled ? undefined : onClick}
       style={{ width: 2 * scale, height: 3 * scale }}
-      className={`relative border-2 flex flex-col rounded-2xl overflow-hidden transition-opacity duration-200 ${
-        disabled ? "opacity-50 pointer-events-none cursor-not-allowed" : ""
+      className={`relative border-3 flex flex-col rounded-2xl overflow-hidden transition-opacity duration-200 ${
+        disabled ? "opacity-75 pointer-events-none cursor-not-allowed" : ""
       } 
-      ${highlight === "wrong" ? "border-[#ff053b]" : "border-[#05ffa1]"}  
+      ${
+        highlight === "wrong" ? "border-[#ff053b]" : "border-[rgb(5,255,161)]"
+      }  
       ${
         highlight === "correct"
           ? "ring-2 ring-green-500/80 ring-offset-1 ring-offset-neutral-900 shadow-[0_0_38px_rgba(34,197,94,0.65)] transition-shadow pointer-events-none cursor-not-allowed"
@@ -75,7 +77,7 @@ export default function ItemCard({
 
       <div className="h-[60px] w-full bg-[#351353] flex items-center justify-center">
         <span
-          className={`text-[#00dffc] font-semibold text-center ${
+          className={`text-[#00dffc] font-semibold text-center [text-shadow:0_0_2px_rgba(5,255,161,0.8),0_2px_8px_rgba(0,0,0,0.7)] ${
             nameLength > 50 ? "" : "text-xl"
           } `}
         >

@@ -2,6 +2,7 @@
 import Image from "next/image";
 import AppButton from "./components/AppButton";
 import { useRouter } from "next/navigation";
+import ScanLines from "./components/ScanLines";
 
 export default function Home() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function Home() {
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#11002a] text-white px-6">
+      <ScanLines lines={false}></ScanLines>
       <div className="pointer-events-none absolute inset-0 -z-30 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_45%,rgba(0,0,0,0.6)_100%)]" />
 
       <svg
