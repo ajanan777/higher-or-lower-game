@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 type ItemCardProps = {
   item: {
     name: string;
@@ -20,6 +22,13 @@ export default function ItemCard({
   const nameLength = name.length;
   const scale = 240;
 
+  const [loaded, setLoaded] = useState(false);
+
+  // reset loading state
+  useEffect(() => {
+    setLoaded(false);
+  }, [imageUrl]);
+
   return (
     <div
       onClick={disabled ? undefined : onClick}
@@ -38,21 +47,32 @@ export default function ItemCard({
           : "transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102"
       }`}
     >
-      {/* IMAGE AREA */}
       <div className="relative flex-grow w-full overflow-hidden flex items-center justify-center pointer-events-none">
-        {/* background (behind) */}
+        {/* background image */}
         <img
           src={imageUrl}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover scale-105 blur-[3px] opacity-50 z-0 pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover scale-105 blur-[15px] opacity-50 z-0 pointer-events-none"
         />
-        {/* foreground (sharp) */}
+
+        {/* dim overlay */}
+        <div
+          className={`absolute inset-0 z-30 pointer-events-none transition-opacity duration-200
+                      ${loaded ? "opacity-0" : "opacity-100"}`}
+        >
+          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-white/5 via-white/10 to-white/5" />
+        </div>
+
+        {/* foreground image fade in  */}
         <img
           src={imageUrl}
           alt={name}
-          className="relative z-10 block w-full h-auto"
-          loading="lazy"
+          loading="eager"
+          onLoad={() => setLoaded(true)}
+          className={`relative z-10 block w-full h-auto transition-opacity duration-500
+                      ${loaded ? "opacity-100" : "opacity-0"}`}
         />
       </div>
 

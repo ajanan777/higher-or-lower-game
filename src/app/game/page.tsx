@@ -96,17 +96,33 @@ export default function Game() {
     //get new pair cards
     // await sleep(200);
     if (outcome === false) {
-      await sleep(300);
+      await sleep(400);
     }
     if (outcome === true) {
+      await sleep(350);
     }
     console.log("animation complete");
-    await sleep(150);
     fetchPair();
   };
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#050014]">
+      <div
+        className={`fixed inset-0 pointer-events-none z-50 ${
+          reveal
+            ? reveal.outcome
+              ? // GREEN (less prominent)
+                "shadow-[inset_0_0_20px_6px_rgba(34,255,136,0.2),inset_0_0_80px_28px_rgba(34,255,136,0.2),inset_0_0_160px_64px_rgba(34,255,136,0.18)] animate-pulse"
+              : // RED (less prominent)
+                "shadow-[inset_0_0_20px_6px_rgba(255,48,48,0.1),inset_0_0_80px_28px_rgba(255,48,48,0.1),inset_0_0_160px_64px_rgba(255,48,48,0.18)] animate-pulse"
+            : score > 0 && score === highScore
+            ? // GRADIENT: blue → fuchsia → neon green (less prominent)
+              "shadow-[inset_0_0_20px_6px_rgba(0,208,255,0.45),inset_0_0_100px_28px_rgba(255,213,206,0.23),inset_0_0_160px_64px_rgba(34,255,136,0.18)] animate-pulse"
+            : // BLUE default (even less prominent)
+              "shadow-[inset_0_0_16px_4px_rgba(161, 3, 252,0.25),inset_0_0_100px_24px_rgba(161, 3, 252,0.15),inset_0_0_140px_56px_rgba(161, 3, 2520.10)] animate-[pulse_3.5s_ease-in-out_infinite]"
+        }`}
+      />
+
       <ScanLines lines={true}></ScanLines>
 
       {/* stuff */}
