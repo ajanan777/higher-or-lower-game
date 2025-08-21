@@ -1,5 +1,8 @@
+import { LogOut } from "lucide-react";
+import { LogIn } from "lucide-react";
+
 type AppButtonProps = {
-  children: string;
+  children: React.ReactNode;
   onClick?: () => void;
   shape?: "rounded" | "square";
 };

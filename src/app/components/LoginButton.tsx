@@ -1,7 +1,5 @@
-import { LogIn } from "lucide-react";
-
 type LoginButtonProps = {
-  children: string;
+  children: React.ReactNode;
   onClick?: () => void;
   shape?: "rounded" | "square";
 };
@@ -40,7 +38,6 @@ export default function LoginButton({
             shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]
         `}
       >
-        <LogIn size={30} strokeWidth={3} />
         {children}
       </span>
 

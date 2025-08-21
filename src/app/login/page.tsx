@@ -4,13 +4,14 @@ import AppButton from "../components/AppButton";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ScanLines from "../components/ScanLines";
-import { LogIn } from "lucide-react";
+import { LogIn, Undo2 } from "lucide-react";
+import AuthButtons from "../components/AuthButtons";
 
 export default function Home() {
   const router = useRouter();
 
-  const handlePlayClicked = (mode: string) => {
-    router.push(`/game?mode=${encodeURIComponent(mode)}`);
+  const handlePlayClicked = () => {
+    router.push("/"); // unchanged
   };
 
   return (
@@ -209,21 +210,17 @@ export default function Home() {
           >
             SIGN/LOG IN
           </h1>
+          <div className="mt-5 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
+            <AppButton onClick={handlePlayClicked}>
+              <span className="flex items-center gap-2">
+                <Undo2 size={30} strokeWidth={3} />
+                Back
+              </span>
+            </AppButton>
+          </div>
 
-          <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
-            <AppButton onClick={() => handlePlayClicked(`hard`)}>
-              HARD [TOP 500 ANIME]
-            </AppButton>
-          </div>
-          <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
-            <AppButton onClick={() => handlePlayClicked(`medium`)}>
-              MEDIUM [TOP 200 ANIME]
-            </AppButton>
-          </div>
-          <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
-            <AppButton onClick={() => handlePlayClicked(`easy`)}>
-              EASY [TOP 100 ANIME]
-            </AppButton>
+          <div className="mt-5 flex justify-center">
+            <AuthButtons></AuthButtons>
           </div>
         </div>
       </section>
