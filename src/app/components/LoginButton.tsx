@@ -1,14 +1,16 @@
-type AppButtonProps = {
+import { LogIn } from "lucide-react";
+
+type LoginButtonProps = {
   children: string;
   onClick?: () => void;
   shape?: "rounded" | "square";
 };
 
-export default function AppButton({
+export default function LoginButton({
   children,
   onClick,
   shape = "rounded",
-}: AppButtonProps) {
+}: LoginButtonProps) {
   const borderShape = shape === "rounded" ? "rounded-[2rem]" : "rounded-none";
   const innerShape =
     shape === "rounded" ? "rounded-[calc(2rem-2px)]" : "rounded-none";
@@ -30,13 +32,15 @@ export default function AppButton({
     >
       <span
         className={`
-          ${innerShape}
-          px-8 py-5 md:px-12 md:py-6
-          bg-[#11002a]/70 backdrop-blur-[1px]
-          ring-1 ring-white/10
-          shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]
+            ${innerShape}
+            flex items-center gap-2   // align text + icon
+            px-4 py-2 md:px-6 md:py-3
+            bg-[#11002a]/70 backdrop-blur-[1px]
+            ring-1 ring-white/10
+            shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]
         `}
       >
+        <LogIn size={30} strokeWidth={3} />
         {children}
       </span>
 

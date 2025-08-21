@@ -1,26 +1,22 @@
 "use client";
 import Image from "next/image";
-import AppButton from "./components/AppButton";
+import AppButton from "../components/AppButton";
 import { useRouter } from "next/navigation";
-import ScanLines from "./components/ScanLines";
-import LoginButton from "./components/LoginButton";
+import { useState } from "react";
+import ScanLines from "../components/ScanLines";
+import { LogIn } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
 
-  const handlePlayClicked = () => {
-    router.push("/mode_selector"); // unchanged
-  };
-
-  const handleLoginClicked = () => {
-    router.push("/login"); // unchanged
+  const handlePlayClicked = (mode: string) => {
+    router.push(`/game?mode=${encodeURIComponent(mode)}`);
   };
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#11002a] text-white px-6">
-      <ScanLines lines={false}></ScanLines>
       <div className="pointer-events-none absolute inset-0 -z-30 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_45%,rgba(0,0,0,0.6)_100%)]" />
-
+      <ScanLines lines={false}></ScanLines>
       <svg
         className="pointer-events-none absolute left-6 top-1/2 z-0 hidden -translate-y-1/2 md:block h-[76vh] w-10"
         viewBox="0 0 20 760"
@@ -200,12 +196,6 @@ export default function Home() {
           blur opacity-45"
         />
 
-        <div className="fixed top-10 right-30 flex transition-transform duration-500 ease-in-out hover:-translate-y-0 hover:scale-101">
-          <LoginButton shape="rounded" onClick={handleLoginClicked}>
-            login in
-          </LoginButton>
-        </div>
-
         <div
           className="rounded-[1.6rem] px-10 py-12 md:px-16 md:py-14
           bg-white/5 backdrop-blur-md ring-1 ring-white/10
@@ -217,11 +207,23 @@ export default function Home() {
             bg-gradient-to-r from-[#7df9ff] via-[#00dffc] to-[#ff71ce]
             drop-shadow-[0_0_18px_rgba(0,223,252,0.45)]"
           >
-            HIGHER OR LOWER
+            SIGN/LOG IN
           </h1>
 
           <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
-            <AppButton onClick={handlePlayClicked}>Play</AppButton>
+            <AppButton onClick={() => handlePlayClicked(`hard`)}>
+              HARD [TOP 500 ANIME]
+            </AppButton>
+          </div>
+          <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
+            <AppButton onClick={() => handlePlayClicked(`medium`)}>
+              MEDIUM [TOP 200 ANIME]
+            </AppButton>
+          </div>
+          <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
+            <AppButton onClick={() => handlePlayClicked(`easy`)}>
+              EASY [TOP 100 ANIME]
+            </AppButton>
           </div>
         </div>
       </section>
