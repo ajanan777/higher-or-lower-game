@@ -5,10 +5,12 @@ import ItemCard from "../components/ItemCard";
 import { Item, Pair, GuessResponse, RevealState } from "../data/types";
 import { useSearchParams } from "next/navigation";
 import ScanLines from "../components/ScanLines";
+import { useRouter } from "next/navigation";
 
 type Mode = "easy" | "medium" | "hard";
 
 export default function Game() {
+  const router = useRouter();
   const search = useSearchParams();
   const rawMode = search.get("mode") ?? "easy";
   const mode: Mode = (["easy", "medium", "hard"] as const).includes(
@@ -34,6 +36,10 @@ export default function Game() {
     setPair(data);
     console.log("pair fetched");
     setReveal(null);
+  };
+
+  const handleLoginClicked = () => {
+    router.push("/login"); // unchanged
   };
 
   useEffect(() => {
@@ -140,7 +146,6 @@ export default function Game() {
           HIGH SCORE: {highScore}
         </h1>
       </div>
-
       {pair && (
         <div className="relative z-10 flex pt-20 flex-row items-center justify-center min-h-screen gap-20 select-none">
           <div className={!isGuessing && !reveal ? "cursor-pointer" : ""}>

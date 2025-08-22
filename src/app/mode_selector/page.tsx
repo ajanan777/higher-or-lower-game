@@ -4,12 +4,22 @@ import AppButton from "../components/AppButton";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ScanLines from "../components/ScanLines";
+import { Undo2 } from "lucide-react";
+import LoginButtonComponent from "../components/LoginButtonComponent";
 
 export default function Home() {
   const router = useRouter();
 
   const handlePlayClicked = (mode: string) => {
     router.push(`/game?mode=${encodeURIComponent(mode)}`);
+  };
+
+  const handleBackClicked = () => {
+    router.push("/"); // unchanged
+  };
+
+  const handleLoginClicked = () => {
+    router.push("/login"); // unchanged
   };
 
   return (
@@ -186,6 +196,12 @@ export default function Home() {
         </g>
       </svg>
 
+      <div className="pointer-events-auto">
+        <LoginButtonComponent
+          onClick={handleLoginClicked}
+        ></LoginButtonComponent>
+      </div>
+
       {/* ===== HERO ===== */}
       <section className="relative w-full max-w-3xl text-center z-10">
         {/* gentle conic glow behind panel */}
@@ -222,6 +238,14 @@ export default function Home() {
           <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
             <AppButton onClick={() => handlePlayClicked(`easy`)}>
               EASY [TOP 100 ANIME]
+            </AppButton>
+          </div>
+          <div className="mt-10 flex justify-center transition-transform duration-500 ease-in-out hover:-translate-y-1 hover:scale-102">
+            <AppButton onClick={handleBackClicked}>
+              <span className="flex items-center gap-2">
+                <Undo2 size={30} strokeWidth={3} />
+                Back
+              </span>
             </AppButton>
           </div>
         </div>
