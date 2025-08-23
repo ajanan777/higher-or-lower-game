@@ -6,6 +6,7 @@ import { Item, Pair, GuessResponse, RevealState } from "../data/types";
 import { useSearchParams } from "next/navigation";
 import ScanLines from "../components/ScanLines";
 import { useRouter } from "next/navigation";
+import NeonRails from "../components/NeonRails";
 
 type Mode = "easy" | "medium" | "hard";
 
@@ -130,6 +131,9 @@ export default function Game() {
       />
 
       <ScanLines lines={true}></ScanLines>
+      <div className="opacity-85">
+        <NeonRails></NeonRails>
+      </div>
 
       {/* stuff */}
       <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center select-none">
