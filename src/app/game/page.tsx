@@ -7,10 +7,12 @@ import { useSearchParams } from "next/navigation";
 import ScanLines from "../components/ScanLines";
 import { useRouter } from "next/navigation";
 import NeonRails from "../components/NeonRails";
+import { useSession } from "next-auth/react";
 
 type Mode = "easy" | "medium" | "hard";
 
 export default function Game() {
+  const { data: session, status } = useSession();
   const router = useRouter();
   const search = useSearchParams();
   const rawMode = search.get("mode") ?? "easy";
@@ -43,8 +45,36 @@ export default function Game() {
     router.push("/login"); // unchanged
   };
 
+  const getHighScoreDB = async () => {
+    if (status === "unauthenticated") {
+      return;
+    } else {
+      try {
+        const response = await fetch("/api/highscore", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            mode: mode,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Server returned error (getHighscoreDB)");
+        }
+        const data = await response.json();
+        setHighScore(data.score);
+        return;
+      } catch (err) {
+        console.error("Failed getHighscore request", err);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchPair();
+    getHighScoreDB();
   }, []);
 
   const handleClick = async (chosenItem: Item, otherItem: Item) => {
