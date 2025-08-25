@@ -1,22 +1,36 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // use the singleton you made
+import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { userID, mode, score } = body;
+    const { mode } = body;
 
-    const newScore = await prisma.highScore.create({
-      data: {
-        userID,
-        mode,
-        score,
-      },
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+    }
+
+    const row = await prisma.highScore.findUnique({
+      where: { userID: session.user.id },
+      select: { easyScore: true, mediumScore: true, hardScore: true },
     });
 
-    return NextResponse.json(newScore);
+    const score =
+      mode === "easy"
+        ? row?.easyScore
+        : mode === "medium"
+        ? row?.mediumScore
+        : row?.hardScore;
+
+    return NextResponse.json({ score: score ?? 0 });
   } catch (e: any) {
     console.error(e);
-    return NextResponse.json({ error: "DB insert failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: "POST request for highscore failed" },
+      { status: 500 }
+    );
   }
 }
