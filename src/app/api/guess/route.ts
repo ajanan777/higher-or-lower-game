@@ -17,9 +17,6 @@ export async function POST(req: Request) {
     return new Response("chosenID does not match options", { status: 400 });
   }
 
-  //   const left = shows.find((show) => show.id === leftID);
-  //   const right = shows.find((show) => show.id === rightID);
-
   if (!clientId) {
     return NextResponse.json(
       { error: "MAL_CLIENT_ID is not set" },
