@@ -2,6 +2,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import { prisma } from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -31,6 +32,25 @@ export const authOptions: NextAuthOptions = {
         session.user.image = token.picture as string | null | undefined;
       }
       return session;
+    },
+  },
+  events: {
+    async signIn({ user }) {
+      if (!user.id) return;
+      try {
+        await prisma.highScore.upsert({
+          where: { userID: user.id },
+          update: {},
+          create: {
+            userID: user.id,
+            easyScore: 0,
+            mediumScore: 0,
+            hardScore: 0,
+          },
+        });
+      } catch (err) {
+        console.error("highScore upsert failed", err);
+      }
     },
   },
 };
