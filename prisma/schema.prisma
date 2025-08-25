@@ -14,9 +14,10 @@ datasource db {
 }
 
 model HighScore {
-  id        String   @id @default(cuid())
-  userID    String
-  mode      String
-  score     Int
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  userID      String   @unique
+  easyScore   Int
+  mediumScore Int
+  hardScore   Int
+  updatedAt   DateTime @updatedAt
 }
