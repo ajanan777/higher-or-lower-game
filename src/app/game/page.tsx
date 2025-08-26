@@ -96,6 +96,7 @@ export default function Game() {
           chosenID: chosenItem.id,
           score: score,
           highScore: highScore,
+          mode: mode,
         }),
       });
       const data = await response.json();
@@ -129,9 +130,6 @@ export default function Game() {
     setHighScore(newHighScore);
     setScore(newScore);
 
-    //update score number
-    //get new pair cards
-    // await sleep(200);
     if (outcome === false) {
       await sleep(400);
     }
