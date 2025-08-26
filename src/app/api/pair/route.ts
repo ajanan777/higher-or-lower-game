@@ -52,10 +52,10 @@ export async function GET(req: Request) {
   const theResponse = await dataSet.json();
 
   const selectedAnimeFirst = theResponse.data[indexFirst - 1];
-  console.log(selectedAnimeFirst);
+  // console.log(selectedAnimeFirst);
 
   const selectedAnimeSecond = theResponse.data[indexSecond - 1];
-  console.log(selectedAnimeSecond);
+  // console.log(selectedAnimeSecond);
 
   const pairShows = [selectedAnimeFirst, selectedAnimeSecond];
 
