@@ -1,10 +1,13 @@
-import { shows } from "../../data/shows";
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { leftID, rightID, chosenID, score, highScore } = body;
+  const { leftID, rightID, chosenID, score, highScore, mode } = body;
   const clientId = process.env.MAL_CLIENT_ID;
+  const session = await getServerSession(authOptions);
 
   if (
     typeof leftID != "number" ||
@@ -65,6 +68,11 @@ export async function POST(req: Request) {
     newHighScore = Math.max(newHighScore, newScore);
   } else {
     outcome = false; //lose
+    if (newScore >= highScore) {
+      if (session?.user?.id) {
+        writeHighScoreDB(newScore, mode, session.user.id);
+      }
+    }
     newHighScore = Math.max(newHighScore, newScore);
     newScore = 0;
   }
@@ -82,4 +90,22 @@ export async function POST(req: Request) {
   );
 }
 
-// const winRating = Math.max(leftRating, rightRating)
+async function writeHighScoreDB(
+  score: number,
+  mode: "easy" | "medium" | "hard",
+  userid: string
+) {
+  try {
+    console.log("attempting db insertion");
+    await prisma.highScore.update({
+      where: { userID: userid },
+      data: {
+        ...(mode === "easy" ? { easyScore: score } : {}),
+        ...(mode === "medium" ? { mediumScore: score } : {}),
+        ...(mode === "hard" ? { hardScore: score } : {}),
+      },
+    });
+  } catch (error) {
+    console.error("failed highscore DB insertion", error);
+  }
+}
