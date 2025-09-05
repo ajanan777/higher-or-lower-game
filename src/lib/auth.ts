@@ -1,0 +1,58 @@
+// src/lib/auth.ts
+import type { NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import { prisma } from "@/lib/prisma";
+
+export const authOptions: NextAuthOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+  ],
+  session: { strategy: "jwt" },
+  callbacks: {
+    async jwt({ token, account, profile }) {
+      if (account && profile) {
+        token.id = token.sub;
+        token.name = profile.name as string | undefined;
+        token.email = profile.email as string | undefined;
+        const p = profile as Record<string, unknown>;
+        token.picture = typeof p.picture === "string" ? p.picture : undefined;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = (token.id ?? token.sub) as string;
+        session.user.name = token.name as string | null | undefined;
+        session.user.email = token.email as string | null | undefined;
+        session.user.image = token.picture as string | null | undefined;
+      }
+      return session;
+    },
+  },
+  events: {
+    async signIn({ user }) {
+      if (!user.id) return;
+      try {
+        await prisma.highScore.upsert({
+          where: { userID: user.id },
+          update: {},
+          create: {
+            userID: user.id,
+            easyScore: 0,
+            mediumScore: 0,
+            hardScore: 0,
+          },
+        });
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          console.error(e.message);
+        } else {
+          console.error(e);
+        }
+      }
+    },
+  },
+};
