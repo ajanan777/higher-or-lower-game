@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-type Mode = "easy" | "medium" | "hard";
-
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const raw = searchParams.get("mode") ?? "easy";
