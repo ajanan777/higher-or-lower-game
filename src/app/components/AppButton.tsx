@@ -1,6 +1,3 @@
-import { LogOut } from "lucide-react";
-import { LogIn } from "lucide-react";
-
 type AppButtonProps = {
   children: React.ReactNode;
   onClick?: () => void;
