@@ -148,7 +148,6 @@ export default function NeonRails() {
           {[...Array(18)].map((_, i) => {
             const y = 40 + i * 40;
             return (
-              // @ts-ignore
               <line
                 key={i}
                 x1="2"
@@ -158,6 +157,7 @@ export default function NeonRails() {
                 stroke="#FF71CE"
                 strokeWidth="1"
               >
+                // @ts-expect-error SVG animate element not in IntrinsicElements
                 <animate
                   attributeName="opacity"
                   values="0.15;0.35;0.15"
