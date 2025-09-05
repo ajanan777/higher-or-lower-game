@@ -50,7 +50,7 @@ export async function POST(req: Request) {
   if (!(left && right)) {
     return new Response("chosenID does not match options", { status: 400 });
   }
-  var outcome = null;
+  let outcome: boolean | null = null;
   let chosenRating;
   const leftRating = left.mean;
   const rightRating = right.mean;
