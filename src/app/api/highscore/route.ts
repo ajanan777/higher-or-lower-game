@@ -26,8 +26,12 @@ export async function POST(req: Request) {
         : row?.hardScore;
 
     return NextResponse.json({ score: score ?? 0 });
-  } catch (e: any) {
-    console.error(e);
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.error(e.message);
+    } else {
+      console.error(e);
+    }
     return NextResponse.json(
       { error: "POST request for highscore failed" },
       { status: 500 }
