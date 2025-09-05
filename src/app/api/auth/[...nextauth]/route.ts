@@ -18,7 +18,8 @@ export const authOptions: NextAuthOptions = {
         token.id = token.sub; // stable user id
         token.name = profile.name as string | undefined;
         token.email = profile.email as string | undefined;
-        token.picture = (profile as any).picture as string | undefined;
+        const p = profile as Record<string, unknown>;
+        token.picture = typeof p.picture === "string" ? p.picture : undefined;
       }
       return token;
     },
@@ -47,8 +48,12 @@ export const authOptions: NextAuthOptions = {
             hardScore: 0,
           },
         });
-      } catch (err) {
-        console.error("highScore upsert failed", err);
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          console.error(e.message);
+        } else {
+          console.error(e);
+        }
       }
     },
   },
