@@ -1,7 +1,7 @@
 import LoginButton from "./LoginButton";
 import { LogIn } from "lucide-react";
 import { CircleUserRound } from "lucide-react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 type LoginButtonComponentProps = {
   onClick?: () => void;
