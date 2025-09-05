@@ -71,12 +71,6 @@ export async function GET(req: Request) {
     })
   );
 
-  const filteredPair = pairShows.map(({ id, name, imageUrl }) => ({
-    id,
-    name,
-    imageUrl,
-  }));
-
   return NextResponse.json({
     first: cleanedPair[0],
     second: cleanedPair[1],
